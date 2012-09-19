@@ -35,10 +35,7 @@ OpenSearchlight.openSearchService.prepareQuery(
 ```
 
 ## Documentation
-_(Coming soon)_
-
-## Examples
-_(Coming soon)_
+See the [annotated source](http://github.com/nsidc/OpenSearchlight/docs/OpenSearchlight-0.1.0.html).
 
 ## License
 OpenSearchlight is licensed under the MIT license.  See `LICENSE.txt`.
