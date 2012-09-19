@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
     },
     clean: {
-      folder: ["dist/", "docs/"]
+      folder: "dist/"
     },
     concat: {
       dist: {
@@ -30,6 +30,11 @@ module.exports = function(grunt) {
       dist: {
         src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
         dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.min.js'
+      }
+    },
+    exec: {
+      docco: {
+        command: 'node_modules/docco/bin/docco -o dist/docs dist/OpenSearchlight-0.1.0.js'
       }
     },
     jasmine: {
@@ -76,4 +81,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', 'lint jasmine concat min');
   grunt.loadNpmTasks('grunt-jasmine-task');
   grunt.loadNpmTasks('grunt-clean');
+  grunt.loadNpmTasks('grunt-exec');
 };
