@@ -1,6 +1,8 @@
-# Opensearchlight
+# OpenSearchlight
 
-A JavaScript OpenSearch client
+A JavaScript OpenSearch client that configures itself around an OpenSearch
+Description Document, making queries against OpenSearch services a little
+easier from JS clients.
 
 ## Getting Started
 Download the [production version][min] or the [development version][max].
@@ -15,7 +17,7 @@ In your web page:
 <script src="OpenSearchlight.min.js"></script>
 <script>
 OpenSearchlight.openSearchService.prepareQuery(
-   "http://www.example.com/opensearch?description", 
+   "http://www.example.com/opensearch?description",
    function (query) {
       query
          .set("searchTerms", "some search words")
