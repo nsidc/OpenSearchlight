@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/www/!svn/ver/4464/code/acadis/acadis_search/trunk/src/contrib/phantomjs-jasminexml/test
+END
+test_spec.js
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/repos/www/!svn/ver/4464/code/acadis/acadis_search/trunk/src/contrib/phantomjs-jasminexml/test/test_spec.js
+END
+test_runner.html
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/repos/www/!svn/ver/4464/code/acadis/acadis_search/trunk/src/contrib/phantomjs-jasminexml/test/test_runner.html
+END
+phantomjs_jasminexml_runner.js
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/repos/www/!svn/ver/4464/code/acadis/acadis_search/trunk/src/contrib/phantomjs-jasminexml/test/phantomjs_jasminexml_runner.js
+END
