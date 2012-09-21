@@ -9,7 +9,7 @@
 
     // Retrieves the OSDD at the specified url (if necessary), and calls back to
     // onSuccess when complete, providing onSuccess a query object to work with.
-    prepareQuery: function (url, onSuccess) {
+    query: function (url, onSuccess) {
       $.ajax({
         url: url,
         success: _.bind(function (data, textStatus, jqXhr) {

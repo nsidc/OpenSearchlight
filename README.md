@@ -16,7 +16,7 @@ In your web page:
 <script src="jquery.js"></script>
 <script src="OpenSearchlight.min.js"></script>
 <script>
-OpenSearchlight.openSearchService.prepareQuery(
+OpenSearchlight.openSearchService.query(
    "http://www.example.com/opensearch?description",
    function (query) {
       query

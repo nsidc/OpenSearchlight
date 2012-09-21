@@ -21,7 +21,7 @@
 //
 // Typical usage:
 //
-//     OpenSearchlight.openSearchService.prepareQuery(
+//     OpenSearchlight.openSearchService.query(
 //        "http://www.example.com/opensearch?description", 
 //        function (query) {
 //           query
