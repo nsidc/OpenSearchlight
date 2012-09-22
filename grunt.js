@@ -37,15 +37,15 @@ module.exports = function(grunt) {
         command: 'node_modules/docco/bin/docco -o dist/docs dist/OpenSearchlight-0.1.0.js'
       }
     },
-    jasmine: {
-      all: ['spec/SpecRunner.html']
+    qunit: {
+      all: ['test/**/*.html']
     },
     lint: {
-      files: ['grunt.js', 'src/**/*.js', 'spec/**/*.js']
+      files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
     },
     watch: {
       files: '<config:lint.files>',
-      tasks: 'lint concat jasmine'
+      tasks: 'lint concat qunit'
     },
     jshint: {
       options: {
@@ -66,20 +66,15 @@ module.exports = function(grunt) {
         $: true,
         sinon: true,
         _: true,
-        beforeEach: true,
-        afterEach: true,
-        describe: true,
-        it: true,
-        xit: true,
-        expect: true
+        test: true,
+        ok: true
       }
     },
     uglify: {}
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint jasmine concat min');
-  grunt.loadNpmTasks('grunt-jasmine-task');
+  grunt.registerTask('default', 'lint qunit concat min');
   grunt.loadNpmTasks('grunt-clean');
   grunt.loadNpmTasks('grunt-exec');
 };

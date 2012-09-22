@@ -15,7 +15,7 @@
 // retrieved, parsed, and passed into the `OpenSearchQuery` instance which is
 // in turn passed to a callback function. Handling and parsing of the OSDD
 // itself is handled by instances of `OpenSearchDescriptionDocument`.
-// 
+//
 // Use the query object (passed as the callback's parameter) to hit the search
 // service and get back results.
 //

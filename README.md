@@ -37,15 +37,19 @@ OpenSearchlight.openSearchService.query(
 ```
 
 ## Documentation
-See the [annotated source](http://github.com/nsidc/OpenSearchlight/docs/OpenSearchlight-0.1.0.html).
+See the [annotated source][annotated_source].
+
+[annotated_source]: http://github.com/nsidc/OpenSearchlight/docs/OpenSearchlight-0.1.0.html
 
 ## License
-OpenSearchlight is licensed under the MIT license.  See `LICENSE.txt`.
+OpenSearchlight is licensed under the MIT license.  See [LICENSE.txt][license].
+
+[license]: https://raw.github.com/nsidc/OpenSearchlight/master/LICENSE.txt
 
 ## Credit
 
-This software was developed by the National Snow and Ice Data Center under NSF
-award number *TODO* XXXXXXX.
+This software was developed by the National Snow and Ice Data Center, sponsored
+by a grant from the National Science Foundation.
 
 ## Release History
 
