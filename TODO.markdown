@@ -1,6 +1,5 @@
 # TODO
 
-1. Example OSDD in the readme to provide the context for the query call example
 2. Add a couple of tests back in.
 3. Docco link (in fact, check all links)
 4. Add Kevin's suggestion for the facade

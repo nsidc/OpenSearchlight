@@ -10,7 +10,26 @@ Download the [production version][min] or the [development version][max].
 [min]: https://raw.github.com/truslove/OpenSearchlight/master/dist/OpenSearchlight.min.js
 [max]: https://raw.github.com/truslove/OpenSearchlight/master/dist/OpenSearchlight.js
 
-In your web page:
+## Usage
+
+Assuming you're trying to use an OpenSearch service whose OSDD
+at http://www.example.com/opensearch?description contains the following:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+ <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+   <ShortName>Web Search</ShortName>
+   <Description>Use Example.com to search the Web.</Description>
+   <Url type="application/atom+xml"
+        template="http://example.com/?q={searchTerms}&amp;pw={startPage?}&amp;n={resultsPerPage?}&amp;format=atom"/>
+   <Url type="text/html" 
+        template="http://example.com/?q={searchTerms}&amp;pw={startPage?}&amp;n={resultsPerPage?}"/>
+   <Query role="example" searchTerms="cat" />
+ </OpenSearchDescription>
+```
+
+In your web page, the following code will retrieve search results for "steely",
+in ATOM format, starting at the second page with ten results per page:
 
 ```html
 <script src="jquery.js"></script>
@@ -20,10 +39,10 @@ OpenSearchlight.openSearchService.query(
    "http://www.example.com/opensearch?description",
    function (query) {
       query
-         .set("searchTerms", "some search words")
-         .set("startPage", "20")
-         .set("resultsPerPage", "100")
-         .setContentType("text/xml")
+         .set("searchTerms", "steely")
+         .set("startPage", "2")
+         .set("resultsPerPage", "10")
+         .setContentType("application/atom+xml")
          .execute({
             success: function (data) {
                // data contains results!
