@@ -1,9 +1,9 @@
 # TODO
 
-2. Add a couple of tests back in.
-3. Docco link (in fact, check all links)
-4. Add Kevin's suggestion for the facade
+1. Docco link (in fact, check all links)
+2. Add Kevin's suggestion for the facade
 
+```javascript
 
     OpenSearchlight.openSearchService.query({
        url: "http://www.example.com/opensearch?description",
@@ -20,3 +20,4 @@
                    // error handling...
                 }
        });
+```

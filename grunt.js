@@ -67,7 +67,10 @@ module.exports = function(grunt) {
         sinon: true,
         _: true,
         test: true,
-        ok: true
+        ok: true,
+        module: true,
+        equal: true,
+        deepEqual: true
       }
     },
     uglify: {}

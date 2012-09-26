@@ -88,10 +88,15 @@
       }
     },
 
+    // Parameters:
+    // * `urlTemplates`: array of { type: "contentType", template: "urlTemplate" } found in the OSDD
+    // * `contentType`: requested content type
+    // * `params`: search parameters
     getBestTemplate: function (urlTemplates, contentType, params) {
-      var filteredByType, bestMatch;
+      var filteredByType, filteredByRequiredParams, bestMatch;
       filteredByType = OSDD.filterUrlTemplatesOnMimeType(urlTemplates, contentType);
-      bestMatch = OSDD.findTemplateWithMostParamMatches(filteredByType, params);
+      filteredByRequiredParams = OSDD.filterUrlTemplatesWithMissingRequiredParams(filteredByType, params);
+      bestMatch = OSDD.findTemplateWithMostParamMatches(filteredByRequiredParams, params);
       return bestMatch.template;
     },
 
@@ -126,6 +131,24 @@
       return false;
     },
 
+    filterUrlTemplatesWithMissingRequiredParams: function (urlTemplates, params) {
+      return _.filter(urlTemplates, function (urlTemplate) {
+        return OSDD.areAllRequiredParamsPresent(urlTemplate, params);
+      });
+    },
+
+    areAllRequiredParamsPresent: function (template, params) {
+      var requiredParams, actualParams;
+      requiredParams = _.map(
+          template.template.match(/\{.*?[^?]\}/g),
+          function (p) {
+            return p.replace(/[{}]/g, '');
+          });
+      actualParams = _.keys(params);
+
+      return ((_.difference(requiredParams, actualParams)).length === 0);
+    },
+
     findTemplateWithMostParamMatches: function (templateUrls, params) {
       var sortedTemplateUrls = _.sortBy(
           templateUrls,
@@ -135,6 +158,11 @@
       return _.last(sortedTemplateUrls);
     },
 
+    // TODO: Fix this to corectly count optional parameters
+    // ??????
+    // Well, ensure that I should be counting optional parameters - if it's to
+    // determine which template matches the best it might be relevant to only
+    // count the required parameters...  If this is the case, rename the method.
     countMatchingParams: function(params, templateUrl) {
       var templateParams;
 
