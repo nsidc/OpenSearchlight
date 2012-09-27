@@ -1,7 +1,6 @@
 # TODO
 
-1. Docco link (in fact, check all links)
-2. Add Kevin's suggestion for the facade
+1. Add Kevin's suggestion for the facade
 
 ```javascript
 
