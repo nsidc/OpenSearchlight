@@ -58,7 +58,7 @@ OpenSearchlight.openSearchService.query(
 ## Documentation
 See the [annotated source][annotated_source].
 
-[annotated_source]: http://github.com/nsidc/OpenSearchlight/docs/OpenSearchlight-0.1.0.html
+[annotated_source]: http://nsidc.github.com/OpenSearchlight/
 
 ## License
 OpenSearchlight is licensed under the MIT license.  See [LICENSE.txt][license].
