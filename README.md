@@ -68,7 +68,7 @@ OpenSearchlight is licensed under the MIT license.  See [LICENSE.txt][license].
 ## Credit
 
 This software was developed by the National Snow and Ice Data Center, sponsored
-by a grant from the National Science Foundation.
+by National Science Foundation grant number OPP-10-16048.
 
 ## Release History
 
