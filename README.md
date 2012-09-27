@@ -7,8 +7,8 @@ easier from JS clients.
 ## Getting Started
 Download the [production version][min] or the [development version][max].
 
-[min]: https://raw.github.com/truslove/OpenSearchlight/master/dist/OpenSearchlight.min.js
-[max]: https://raw.github.com/truslove/OpenSearchlight/master/dist/OpenSearchlight.js
+[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.1.0.min.js
+[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.1.0.js
 
 ## Usage
 
