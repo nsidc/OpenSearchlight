@@ -103,12 +103,9 @@
 
     equal(1, OSDD.countMatchingParams(params, "a={a}"));
     equal(1, OSDD.countMatchingParams(params, "Z={Z}&A={a}"));
-    //equal(1, OSDD.countMatchingParams(params, "a={a?}")); // TODO: Uncomment this line to expose a bug.
 
     equal(3, OSDD.countMatchingParams(params, "a={a}&b={b}&c={c}"));
     equal(3, OSDD.countMatchingParams(params, "a={a}&A={A}&b={b}&B={B}&c={c}"));
-    //equal(3, OSDD.countMatchingParams(params, "a={a?}&b={b?}&c={c?}")); // TODO: Uncomment this line to expose a bug.
   });
-
 
 }());

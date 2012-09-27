@@ -158,11 +158,6 @@
       return _.last(sortedTemplateUrls);
     },
 
-    // TODO: Fix this to corectly count optional parameters
-    // ??????
-    // Well, ensure that I should be counting optional parameters - if it's to
-    // determine which template matches the best it might be relevant to only
-    // count the required parameters...  If this is the case, rename the method.
     countMatchingParams: function(params, templateUrl) {
       var templateParams;
 
