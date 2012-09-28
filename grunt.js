@@ -34,7 +34,7 @@ module.exports = function(grunt) {
     },
     exec: {
       docco: {
-        command: 'node_modules/docco/bin/docco -o dist/docs dist/OpenSearchlight-0.1.0.js'
+        command: 'node_modules/docco/bin/docco -o dist/docs dist/OpenSearchlight-0.1.1.js'
       }
     },
     qunit: {

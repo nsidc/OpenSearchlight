@@ -72,6 +72,8 @@ by National Science Foundation grant number OPP-10-16048.
 
 ## Release History
 
+* 0.1.1
+  * Documentation fixes
 * 0.1.0
   * Initial release
 

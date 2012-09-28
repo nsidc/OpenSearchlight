@@ -89,9 +89,10 @@
     },
 
     // Parameters:
-    // * `urlTemplates`: array of { type: "contentType", template: "urlTemplate" } found in the OSDD
-    // * `contentType`: requested content type
-    // * `params`: search parameters
+    //
+    // * `urlTemplates`: array of `{ type: "contentType", template: "urlTemplate" }` objects, as found in the OSDD
+    // * `contentType`: requested content type, e.g. `"application/json"`
+    // * `params`: object containing search parameters
     getBestTemplate: function (urlTemplates, contentType, params) {
       var filteredByType, filteredByRequiredParams, bestMatch;
       filteredByType = OSDD.filterUrlTemplatesOnMimeType(urlTemplates, contentType);
@@ -131,6 +132,8 @@
       return false;
     },
 
+    // Return the subset of templates in the `urlTemplates` array whose
+    // required params are available in the `params` object
     filterUrlTemplatesWithMissingRequiredParams: function (urlTemplates, params) {
       return _.filter(urlTemplates, function (urlTemplate) {
         return OSDD.areAllRequiredParamsPresent(urlTemplate, params);
@@ -175,6 +178,9 @@
           0);
     },
 
+    // Replace the placeholder fields in the given `urlTemplate` with the
+    // values in `params`. Any unfilled parameter template fields are replaced
+    // with an empty string.
     substituteTemplateParameters: function (urlTemplate, params) {
       var url = urlTemplate;
 
