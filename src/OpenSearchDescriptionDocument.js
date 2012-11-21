@@ -190,7 +190,7 @@
       });
 
       // strip out any remaining {....?} template params
-      url = url.replace(/\{[^}]*\?\}/, "", "g");
+      url = url.replace(/\{.*?\?\}/g, "");
       return url;
     }
   });

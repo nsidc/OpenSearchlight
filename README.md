@@ -4,11 +4,11 @@ A JavaScript OpenSearch client that configures itself around an OpenSearch
 Description Document, making queries against OpenSearch services a little
 easier from JS clients.
 
-## Getting Started
-Download the [production version][min] or the [development version][max].
+## Download
+Download the [minified version][min] or the [development version][max].
 
-[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.1.1.min.js
-[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.1.1.js
+[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.1.2.min.js
+[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.1.2.js
 
 ## Usage
 
@@ -72,6 +72,9 @@ by National Science Foundation grant number OPP-10-16048.
 
 ## Release History
 
+* 0.1.2
+  * Fixed bug preventing empty optional parameters from being filled with empty string
+  * Added Release Checklist to documentation
 * 0.1.1
   * Documentation fixes
 * 0.1.0
@@ -85,6 +88,21 @@ grunt. You'll find source code in the `src` subdirectory!
 While grunt can run the included unit tests via PhantomJS, this shouldn't be
 considered a substitute for the real thing. Please be sure to test the
 `test/*.html` unit test file(s) in _actual_ browsers.
+
+### Release Checklist
+
+* Make change to code
+* Update version number in `OpenSearchlight.pkg.json`
+* In `README.md`m update version numbers in Download and Release History sections
+* In `grunt.js` update version number in the exec (Docco) task
+* Run `grunt` and ensure all tests pass
+* Run `grunt exec` to generate updated docco doc
+* Run `test/*.html` in the browser and ensure all tests pass
+* Check changes in to Git master
+* Make changes to the `gh-pages` branch:
+  * Add the new minified and development .js file
+  * Update index.html (and docco.css if necessary) from `dist/docs/OpenSearchlight-<VERSION>.html`
+
 
 ### Install and Build
 

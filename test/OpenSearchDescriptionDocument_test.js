@@ -4,7 +4,7 @@
 
   module("filling in template urls");
   test("optional parameters are also used to fill in the template", function () {
-    equal("A=1&b=2&c=", OSDD.substituteTemplateParameters("A={A}&b={b?}&c={c?}", {A: 1, b: 2}));
+    equal("A=1&b=2&c=&d=", OSDD.substituteTemplateParameters("A={A}&b={b?}&c={c?}&d={d?}", {A: 1, b: 2}));
   });
 
   module("extracting urls from the OSDD xml");
@@ -73,7 +73,6 @@
   //test("given no matching templates, an exception is thrown", function () {
     ////TODO
   //});
-
 
   module("Content type matching");
   test("simple rules for content type matching", function () {
