@@ -70,7 +70,34 @@ module.exports = function(grunt) {
         ok: true,
         module: true,
         equal: true,
-        deepEqual: true
+        deepEqual: true,
+
+        // specit
+        describe: true,
+        it: true,
+        assert: true,
+        should: true,
+        before: true,
+        after: true,
+
+        // specit matchers
+        include: true,
+        eql: true,
+        beSimilarTo: true,
+        be: true,
+        beA: true,
+        beAn: true,
+        match: true,
+        respondTo: true,
+        beLessThan: true,
+        beLessThanOrEqualTo: true,
+        beGreaterThan: true,
+        beGreaterThanOrEqualTo: true,
+        beOnThePage: true,
+        beEmpty: true,
+        beToTheLeftOf: true,
+        beToTheRightOf: true,
+        beAbove: true
       }
     },
     uglify: {}
