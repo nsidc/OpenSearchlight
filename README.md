@@ -72,6 +72,8 @@ by National Science Foundation grant number OPP-10-16048.
 
 ## Release History
 
+* 0.2.1
+  * Added a simpler API
 * 0.1.2
   * Fixed bug preventing empty optional parameters from being filled with empty string
   * Added Release Checklist to documentation
@@ -108,10 +110,11 @@ considered a substitute for the real thing. Please be sure to test the
 
 _This assumes you have [node.js](http://nodejs.org/) and [npm](http://npmjs.org/) installed already._
 
-1. Test that grunt is installed globally by running `grunt --version` at the command-line.
-2. If grunt isn't installed globally, run `npm install -g grunt` to install the latest version. _You may need to run `sudo npm install -g grunt`._
-3. From the root directory of this project, run `npm install` to install the project's dependencies.
-4. Run `grunt` from the root directory to run the tests and build the packages and documentaion.
+1. Ensure all git submodules have been retrieved: `git submodule update --init`
+2. Test that grunt is installed globally by running `grunt --version` at the command-line.
+3. If grunt isn't installed globally, run `npm install -g grunt` to install the latest version. _You may need to run `sudo npm install -g grunt`._
+4. From the root directory of this project, run `npm install` to install the project's dependencies.
+5. Run `grunt` from the root directory to run the tests and build the packages and documentaion.
 
 ### Installing PhantomJS
 

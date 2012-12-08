@@ -1,5 +1,7 @@
 /*global OpenSearchlight:true */
 (function ($, _) {
+
+  // ## OpenSearchQuery
   var OpenSearchQuery;
 
   //

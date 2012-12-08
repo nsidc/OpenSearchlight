@@ -21,6 +21,25 @@
 //
 // Typical usage:
 //
+//     OpenSearchlight.query({
+//        osdd: "http://www.example.com/opensearch?description",
+//        contentType: "text/xml",
+//        parameters: {
+//           searchTerms: "some search words",
+//           startPage: "20",
+//           resultsPerPage: "100"
+//        },
+//        success: function (data) {
+//           // data contains results!
+//        },
+//        error: function (jqXHR, textStatus, errorThrown) {
+//           // error handling...
+//        }
+//     });
+//
+// The above is equivalent to the following code, which uses the objects in the
+// API explicitly:
+//
 //     OpenSearchlight.openSearchService.query(
 //        "http://www.example.com/opensearch?description", 
 //        function (query) {
@@ -38,29 +57,30 @@
 //                 }
 //              });
 //        });
-//
+
 // ## OpenSearchlight
-//
+
 // Declare the global object everything lives in
 var OpenSearchlight = OpenSearchlight || {};
 
 (function () {
-
   // Top-level facade for all the rest of the API.
   //
-  // * params - object literal, containing:
-  //   * osdd - URL of the OpenSearch service's OSDD
-  //   * parameters - search parameters to substitute into the search templates
-  //   * success - callback function to call with the results. The results will be passed as the first argument to the function.
-  //   * contentType - contentType requested of the service
-  //   * error - callback function if the opensearch query fails
+  // * `params`: object literal, containing:
+  //   * `osdd`: URL of the OpenSearch service's OSDD
+  //   * `parameters`: search parameters to substitute into the search templates
+  //   * `success`: callback function to call with the results. The results will be passed as the first argument to the function.
+  //   * `contentType`: contentType requested of the service
+  //   * `error`: callback function if the opensearch query fails
   OpenSearchlight.query = function (params) {
-    var osddUrl, queryFunction;
-    osddUrl = params.osdd;
+    var queryFunction;
+
+    OpenSearchlight.ensureParamsNotEmpty(params);
+    OpenSearchlight.ensureParamsHasOsdd(params);
+    OpenSearchlight.ensureParamsHasSuccessHandler(params);
 
     queryFunction = OpenSearchlight.generateOsddSuccessFn(params);
-
-    OpenSearchlight.openSearchService.query(osddUrl, queryFunction);
+    OpenSearchlight.openSearchService.query(params.osdd, queryFunction);
   };
 
   // Generator for the onSuccess method used when the OSDD is
@@ -70,10 +90,12 @@ var OpenSearchlight = OpenSearchlight || {};
         var queryParams;
 
         if (params instanceof Object) {
+           // Extract query parameters
            _.each(params.parameters, function (val, key) {
               query.set(key, val);
            });
 
+           // Extract desired content type
            if (params.contentType !== undefined) {
               query.setContentType(params.contentType);
            }
@@ -87,9 +109,9 @@ var OpenSearchlight = OpenSearchlight || {};
   // Copy selected properties from the `src` object to the `dest` object.
   // Returns a new object with the combined properties.
   //
-  // * `dest` - object that new properties are added to
-  // * `src` - object that properties are copied from
-  // * `props` - a property or a list of properties to copy
+  // * `dest`: object that new properties are added to
+  // * `src`: object that properties are copied from
+  // * `props`: a property or a list of properties to copy
   OpenSearchlight.extendWith = function(dest, src, props) {
      var result = _.extend(dest),
          propsToCopy = [];
@@ -109,6 +131,8 @@ var OpenSearchlight = OpenSearchlight || {};
      return result;
   };
 
+  // ## Helper functions for OpenSearchlight
+
   // Converts scalar arguments into arrays with the scalar as the first array element.
   function arrayify(p) {
      var a = [];
@@ -119,5 +143,23 @@ var OpenSearchlight = OpenSearchlight || {};
         return a;
      }
   }
+
+  OpenSearchlight.ensureParamsNotEmpty = function(params) {
+    if (params === undefined) {
+       throw new Error("Must pass a params object");
+    }
+  };
+
+  OpenSearchlight.ensureParamsHasOsdd = function (params) {
+    if (typeof params.osdd !== "string") {
+       throw new Error("Must pass an osdd value in the params object");
+    }
+  };
+
+  OpenSearchlight.ensureParamsHasSuccessHandler = function (params) {
+    if (typeof params.success !== "function") {
+       throw new Error("Must pass a success handler in the params object");
+    }
+  };
 
 }());
