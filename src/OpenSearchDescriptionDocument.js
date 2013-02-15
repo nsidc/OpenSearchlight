@@ -140,7 +140,29 @@
       });
     },
 
+
     areAllRequiredParamsPresent: function (template, params) {
+       var allParams, requiredParams, actualParams;
+       allParams = _.map(
+          template.template.match(/\{[^}]*\}/g),  // Find all template substrings
+          function (p) {
+             return p.replace(/[{}]/g, '');        // Strip off the braces
+          }
+       );
+
+       // Select the subset of template parameters that don't end with a "?"
+       requiredParams = _.filter(
+          allParams,
+          function(param) { return param.substring(param.length-1) !== "?"; }
+       );
+
+       actualParams = _.keys(params);
+
+       return ((_.difference(requiredParams, actualParams)).length === 0);
+    },
+
+
+    XareAllRequiredParamsPresent: function (template, params) {
       var requiredParams, actualParams;
       requiredParams = _.map(
           template.template.match(/\{.*?[^?]\}/g),

@@ -70,6 +70,15 @@
       );
   });
 
+  test("Yoshi's bug with template matching going too far is fixed", function () {
+    var templates = [
+      { type: "application/xml", template: "a={a?}&b={b}&c={c}" }
+    ];
+    equal(
+      OSDD.getBestTemplate(templates, "application/xml", { b: "bar", c: "baz" }),
+      "a={a?}&b={b}&c={c}");
+  });
+
   //test("given no matching templates, an exception is thrown", function () {
     ////TODO
   //});

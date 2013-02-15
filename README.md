@@ -74,6 +74,7 @@ by National Science Foundation grant number OPP-10-16048.
 
 * 0.2.1
   * Added a simpler API
+  * Fixed a bug handling optional parameters
 * 0.1.2
   * Fixed bug preventing empty optional parameters from being filled with empty string
   * Added Release Checklist to documentation
