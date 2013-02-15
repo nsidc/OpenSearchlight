@@ -83,6 +83,10 @@ by National Science Foundation grant number OPP-10-16048.
 * 0.1.0
   * Initial release
 
+OpenSearchlight uses [semantic versioning][semver].
+
+[semver]: http://semver.org/
+
 ## Developer Notes
 
 Please don't edit files in the `dist` subdirectory as they are generated via
@@ -96,10 +100,10 @@ considered a substitute for the real thing. Please be sure to test the
 
 * Make change to code
 * Update version number in `OpenSearchlight.pkg.json`
-* In `README.md`m update version numbers in Download and Release History sections
+* In `README.md` update version numbers in Download and Release History sections
 * In `grunt.js` update version number in the exec (Docco) task
 * Run `grunt` and ensure all tests pass
-* Run `grunt exec` to generate updated docco doc
+* Run `grunt docs` to generate updated source documentation
 * Run `test/*.html` in the browser and ensure all tests pass
 * Check changes in to Git master
 * Make changes to the `gh-pages` branch:
@@ -124,14 +128,4 @@ In order for the qunit task to work properly,
 (if you can run "phantomjs" at the command line, this task should work).
 
 Unfortunately, PhantomJS cannot be installed automatically via npm or grunt, so
-you need to install it yourself. There are a number of ways to install
-PhantomJS.
-
-* [PhantomJS and Mac OS X](http://ariya.ofilabs.com/2012/02/phantomjs-and-mac-os-x.html)
-* [PhantomJS Installation](http://code.google.com/p/phantomjs/wiki/Installation) (PhantomJS wiki)
-
-Note that the `phantomjs` executable needs to be in the system `PATH` for grunt to see it.
-
-* [How to set the path and environment variables in Windows](http://www.computerhope.com/issues/ch000549.htm)
-* [Where does $PATH get set in OS X 10.6 Snow Leopard?](http://superuser.com/questions/69130/where-does-path-get-set-in-os-x-10-6-snow-leopard)
-* [How do I change the PATH variable in Linux](https://www.google.com/search?q=How+do+I+change+the+PATH+variable+in+Linux)
+you need to install it yourself. 

@@ -105,6 +105,7 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('docs', 'default exec');
   grunt.loadNpmTasks('grunt-clean');
   grunt.loadNpmTasks('grunt-exec');
 };
