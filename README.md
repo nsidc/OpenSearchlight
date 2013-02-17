@@ -7,8 +7,8 @@ easier from JS clients.
 ## Download
 Download the [minified version][min] or the [development version][max].
 
-[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.1.2.min.js
-[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.1.2.js
+[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.2.1.min.js
+[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.2.1.js
 
 ## Usage
 
@@ -35,23 +35,21 @@ in ATOM format, starting at the second page with ten results per page:
 <script src="jquery.js"></script>
 <script src="OpenSearchlight.min.js"></script>
 <script>
-OpenSearchlight.openSearchService.query(
-   "http://www.example.com/opensearch?description",
-   function (query) {
-      query
-         .set("searchTerms", "steely")
-         .set("startPage", "2")
-         .set("resultsPerPage", "10")
-         .setContentType("application/atom+xml")
-         .execute({
-            success: function (data) {
-               // data contains results!
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-               // error handling...
-            }
-         });
-   });
+OpenSearchlight.query({
+   osdd: "http://www.example.com/opensearch?description",
+   contentType: "application/atom+xml"
+   parameters: {
+      searchTerms: "steely",
+      startPage: "2",
+      resultsPerPage: "10"
+   },
+   success: function (data) {
+      // data contains results!
+   },
+   error: function (jqXHR, textStatus, errorThrown) {
+      // error handling...
+   }
+});
 </script>
 ```
 
