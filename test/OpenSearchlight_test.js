@@ -208,20 +208,6 @@ describe("error conditions", function () {
     assert(ex).should(be);
   });
 
-  it("should not call the error callback under normal circumstances", function () {
-    var errorCallback = sinon.stub();
-    sinon.stub(OpenSearchlight, "ensureParamsHasOsdd");
-    sinon.stub(OpenSearchlight, "ensureParamsHasSuccessHandler");
-
-    OpenSearchlight.query({
-      error: errorCallback
-    });
-
-    assert(errorCallback.callCount).should(eql, 0);
-    OpenSearchlight.ensureParamsHasOsdd.restore();
-    OpenSearchlight.ensureParamsHasSuccessHandler.restore();
-  });
-
   it("should call the error callback if retrieving the OSDD returns an error", function () {
     // TODO
     equal(true, true);
