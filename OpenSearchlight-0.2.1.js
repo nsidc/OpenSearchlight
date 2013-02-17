@@ -1,6 +1,6 @@
-/*! Opensearchlight - v0.2.1 - 2012-12-10
+/*! Opensearchlight - v0.2.1 - 2013-02-17
 * https://github.com/nsidc/OpenSearchlight
-* Copyright (c) 2012 Regents of the University of Colorado; Licensed MIT */
+* Copyright (c) 2013 Regents of the University of Colorado; Licensed MIT */
 
 // ## About
 //
@@ -418,7 +418,29 @@ var OpenSearchlight = OpenSearchlight || {};
       });
     },
 
+
     areAllRequiredParamsPresent: function (template, params) {
+       var allParams, requiredParams, actualParams;
+       allParams = _.map(
+          template.template.match(/\{[^}]*\}/g),  // Find all template substrings
+          function (p) {
+             return p.replace(/[{}]/g, '');        // Strip off the braces
+          }
+       );
+
+       // Select the subset of template parameters that don't end with a "?"
+       requiredParams = _.filter(
+          allParams,
+          function(param) { return param.substring(param.length-1) !== "?"; }
+       );
+
+       actualParams = _.keys(params);
+
+       return ((_.difference(requiredParams, actualParams)).length === 0);
+    },
+
+
+    XareAllRequiredParamsPresent: function (template, params) {
       var requiredParams, actualParams;
       requiredParams = _.map(
           template.template.match(/\{.*?[^?]\}/g),
