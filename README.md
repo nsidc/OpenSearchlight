@@ -7,8 +7,8 @@ easier from JS clients.
 ## Download
 Download the [minified version][min] or the [development version][max].
 
-[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.2.1.min.js
-[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.2.1.js
+[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.2.3.min.js
+[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.2.3.js
 
 ## Usage
 
@@ -69,7 +69,8 @@ This software was developed by the National Snow and Ice Data Center, sponsored
 by National Science Foundation grant number OPP-10-16048.
 
 ## Release History
-
+* 0.2.3
+  * Added an optional callback function in OpenSearchQuery API
 * 0.2.2
   * Upgraded to Grunt 0.4
 * 0.2.1
@@ -101,7 +102,6 @@ considered a substitute for the real thing. Please be sure to test the
 * Make change to code
 * Update version number in `OpenSearchlight.pkg.json`
 * In `README.md` update version numbers in Download and Release History sections
-* In `grunt.js` update version number in the exec (Docco) task
 * Run `grunt` and ensure all tests pass
 * Run `grunt docs` to generate updated source documentation
 * Run `test/*.html` in the browser and ensure all tests pass

@@ -83,6 +83,20 @@ describe("the query facade", function () {
     assert(queryStub.firstCall.args).should(include, generatedFn);
     generatorFn.restore();
   });
+
+  it("should generate the opensearch service callback queryXhr function", function() {
+    var stubQuery = sinon.stub(),
+        osddstub = sinon.stub(OpenSearchlight, "generateOsddSuccessFn");
+    sinon.stub(OpenSearchlight, "ensureParamsHasOsdd");
+    sinon.stub(OpenSearchlight, "ensureParamsHasSuccessHandler");
+
+    OpenSearchlight.query({osdd:null,queryXhr:stubQuery});
+
+    assert(osddstub.firstCall.args[0].queryXhr).should(eql, stubQuery);
+    OpenSearchlight.generateOsddSuccessFn.restore();
+    OpenSearchlight.ensureParamsHasOsdd.restore();
+    OpenSearchlight.ensureParamsHasSuccessHandler.restore();
+  });
 });
 
 describe("Generator for the OSDD onSuccess handler", function () {
@@ -165,6 +179,62 @@ describe("the generated OSDD success handler function", function () {
     fn(fakeQuery);
 
     assert(fakeQuery.setContentType.callCount).should(eql, 0);
+  });
+
+  it("should set the queryXhr callback if it is provided", function () {
+    var queryXhrStub = sinon.stub(),
+        params = {queryXhr: queryXhrStub},
+        fn = OpenSearchlight.generateOsddSuccessFn(params);
+
+    fn(fakeQuery);
+
+    assert(fakeQuery.execute.firstCall.args[0].queryXhr).should(eql, queryXhrStub);
+  });
+
+  it("should not set the queryXhr callback if it is not provided", function () {
+    var params = {},
+        fn = OpenSearchlight.generateOsddSuccessFn(params);
+
+    fn(fakeQuery);
+
+    assert(fakeQuery.execute.firstCall.args[0].queryXhr === undefined ).should(eql, true);
+  });
+});
+
+describe("OpenSearchQuery", function () {
+  it("should invoke queryXhr callback with the jqXHR", function () {
+    var queryXhrStub = sinon.stub(), fakeJqXhr = {}, osQuery;
+    sinon.stub(OpenSearchlight.OpenSearchQuery.prototype,"initialize");
+    sinon.stub(OpenSearchlight.OpenSearchDescriptionDocument.prototype, "initialize");
+    sinon.stub(OpenSearchlight.OpenSearchDescriptionDocument.prototype, "getQueryUrl");
+    sinon.stub($, "ajax").returns(fakeJqXhr);
+
+    osQuery = new OpenSearchlight.OpenSearchQuery();
+    osQuery.openSearchDescriptionDocument = new OpenSearchlight.OpenSearchDescriptionDocument();
+
+    osQuery.execute({queryXhr: queryXhrStub});
+
+    assert(queryXhrStub.callCount).should(eql, 1);
+    assert(queryXhrStub.firstCall.args[0]).should(eql,fakeJqXhr);
+
+    OpenSearchlight.OpenSearchQuery.prototype.initialize.restore();
+    OpenSearchlight.OpenSearchDescriptionDocument.prototype.initialize.restore();
+    OpenSearchlight.OpenSearchDescriptionDocument.prototype.getQueryUrl.restore();
+    $.ajax.restore();
+  });
+
+  it("should not invoke queryXhr callback with the jqXHR when callback function is not set", function () {
+    var queryXhrStub = sinon.stub(), fakeJqXhr = {}, osQuery;
+    sinon.stub(OpenSearchlight.OpenSearchQuery.prototype,"initialize");
+    sinon.stub(OpenSearchlight.OpenSearchDescriptionDocument.prototype, "initialize");
+    sinon.stub(OpenSearchlight.OpenSearchDescriptionDocument.prototype, "getQueryUrl");
+    sinon.stub($, "ajax").returns(fakeJqXhr);
+
+    osQuery = new OpenSearchlight.OpenSearchQuery();
+    osQuery.openSearchDescriptionDocument = new OpenSearchlight.OpenSearchDescriptionDocument();
+
+    osQuery.execute({});
+    assert(queryXhrStub.callCount).should(eql, 0);
   });
 });
 

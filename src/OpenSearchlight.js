@@ -101,7 +101,7 @@ var OpenSearchlight = OpenSearchlight || {};
            }
         }
 
-        queryParams = OpenSearchlight.extendWith({}, params, ["success", "error"]);
+        queryParams = OpenSearchlight.extendWith({}, params, ["success", "error", "queryXhr"]);
         query.execute(queryParams);
      };
   };

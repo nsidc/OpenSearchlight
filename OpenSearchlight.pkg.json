@@ -2,7 +2,7 @@
   "name": "OpenSearchlight",
   "title": "Opensearchlight",
   "description": "JavaScript OpenSearch client",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://github.com/nsidc/OpenSearchlight",
   "author": {
     "name": "Ian Truslove",
