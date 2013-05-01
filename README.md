@@ -70,6 +70,8 @@ by National Science Foundation grant number OPP-10-16048.
 
 ## Release History
 
+* 0.2.2
+  * Upgraded to Grunt 0.4
 * 0.2.1
   * Added a simpler API
   * Fixed a bug handling optional parameters
@@ -115,15 +117,7 @@ _This assumes you have [node.js](http://nodejs.org/) and [npm](http://npmjs.org/
 
 1. Ensure all git submodules have been retrieved: `git submodule update --init`
 2. Test that grunt is installed globally by running `grunt --version` at the command-line.
-3. If grunt isn't installed globally, run `npm install -g grunt` to install the latest version. _You may need to run `sudo npm install -g grunt`._
+3. If grunt isn't installed globally, run `npm install -g grunt-cli` to install the latest version. _You may need to run `sudo npm install -g grunt-cli`._
 4. From the root directory of this project, run `npm install` to install the project's dependencies.
 5. Run `grunt` from the root directory to run the tests and build the packages and documentaion.
 
-### Installing PhantomJS
-
-In order for the qunit task to work properly,
-[PhantomJS](http://www.phantomjs.org/) must be installed and in the system PATH
-(if you can run "phantomjs" at the command line, this task should work).
-
-Unfortunately, PhantomJS cannot be installed automatically via npm or grunt, so
-you need to install it yourself. 
