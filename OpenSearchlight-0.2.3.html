@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>OpenSearchlight-0.2.3.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>OpenSearchlight-0.2.3.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="comment">/*! Opensearchlight - v0.2.3 - 2013-05-03
+* https://github.com/nsidc/OpenSearchlight
+* Copyright (c) 2013 Regents of the University of Colorado; Licensed MIT
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2>About</h2>
+<p>OpenSearchlight is a client library to access <a href="http://www.opensearch.org">OpenSearch</a> services.</p>
+<h2>Usage</h2>
+<p><code>openSearchService</code> is the primary entry point to OpenSearchlight. Use it to
+generate an <code>OpenSearchQuery</code> instance. The OSDD of the service is
+retrieved, parsed, and passed into the <code>OpenSearchQuery</code> instance which is
+in turn passed to a callback function. Handling and parsing of the OSDD
+itself is handled by instances of <code>OpenSearchDescriptionDocument</code>.</p>
+<p>Use the query object (passed as the callback&#39;s parameter) to hit the search
+service and get back results.</p>
+<p>Typical usage:</p>
+<pre><code>OpenSearchlight.query({
+   osdd: &quot;http://www.example.com/opensearch?description&quot;,
+   contentType: &quot;text/xml&quot;,
+   parameters: {
+      searchTerms: &quot;some search words&quot;,
+      startPage: &quot;20&quot;,
+      resultsPerPage: &quot;100&quot;
+   },
+   success: function (data) {
+      // data contains results!
+   },
+   error: function (jqXHR, textStatus, errorThrown) {
+      // error handling...
+   }
+});</code></pre>
+<p>The above is equivalent to the following code, which uses the objects in the
+API explicitly:</p>
+<pre><code>OpenSearchlight.openSearchService.query(
+   &quot;http://www.example.com/opensearch?description&quot;, 
+   function (query) {
+      query
+         .set(&quot;searchTerms&quot;, &quot;some search words&quot;)
+         .set(&quot;startPage&quot;, &quot;20&quot;)
+         .set(&quot;resultsPerPage&quot;, &quot;100&quot;)
+         .setContentType(&quot;text/xml&quot;)
+         .execute({
+            success: function (data) {
+               // data contains results!
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+               // error handling...
+            }
+         });
+   });</code></pre>
+<h2>OpenSearchlight</h2>
+<p>Declare the global object everything lives in</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">var</span> OpenSearchlight = OpenSearchlight || {};
+
+(<span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Top-level facade for all the rest of the API.</p>
+<ul>
+<li><code>params</code>: object literal, containing:<ul>
+<li><code>osdd</code>: URL of the OpenSearch service&#39;s OSDD</li>
+<li><code>parameters</code>: search parameters to substitute into the search templates</li>
+<li><code>success</code>: callback function to call with the results. The results will be passed as the first argument to the function.</li>
+<li><code>contentType</code>: contentType requested of the service</li>
+<li><code>error</code>: callback function if the opensearch query fails</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  OpenSearchlight.query = <span class="function"><span class="keyword">function</span> <span class="params">(params)</span> {</span>
+    <span class="keyword">var</span> queryFunction;
+
+    OpenSearchlight.ensureParamsNotEmpty(params);
+    OpenSearchlight.ensureParamsHasOsdd(params);
+    OpenSearchlight.ensureParamsHasSuccessHandler(params);
+
+    queryFunction = OpenSearchlight.generateOsddSuccessFn(params);
+    OpenSearchlight.openSearchService.query(params.osdd, queryFunction);
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Generator for the onSuccess method used when the OSDD is
+successfully retrieved</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  OpenSearchlight.generateOsddSuccessFn = <span class="function"><span class="keyword">function</span> <span class="params">(params)</span> {</span>
+     <span class="keyword">return</span> <span class="keyword">function</span>(query) {
+        <span class="keyword">var</span> queryParams;
+
+        <span class="keyword">if</span> (params <span class="keyword">instanceof</span> Object) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Extract query parameters</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>           _.each(params.parameters, <span class="function"><span class="keyword">function</span> <span class="params">(val, key)</span> {</span>
+              query.set(key, val);
+           });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Extract desired content type</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>           <span class="keyword">if</span> (params.contentType !== <span class="literal">undefined</span>) {
+              query.setContentType(params.contentType);
+           }
+        }
+
+        queryParams = OpenSearchlight.extendWith({}, params, [<span class="string">"success"</span>, <span class="string">"error"</span>, <span class="string">"queryXhr"</span>]);
+        query.execute(queryParams);
+     };
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Copy selected properties from the <code>src</code> object to the <code>dest</code> object.
+Returns a new object with the combined properties.</p>
+<ul>
+<li><code>dest</code>: object that new properties are added to</li>
+<li><code>src</code>: object that properties are copied from</li>
+<li><code>props</code>: a property or a list of properties to copy</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  OpenSearchlight.extendWith = <span class="keyword">function</span>(dest, src, props) {
+     <span class="keyword">var</span> result = _.extend(dest),
+         propsToCopy = [];
+
+     <span class="keyword">if</span> (<span class="keyword">typeof</span> src !== <span class="string">"object"</span>) {
+        <span class="keyword">return</span> dest;
+     }
+
+     propsToCopy = arrayify(props);
+
+     _.each(propsToCopy, <span class="keyword">function</span>(prop) {
+        <span class="keyword">if</span> (src.hasOwnProperty(prop)) {
+           result[prop] = src[prop];
+        }
+     });
+
+     <span class="keyword">return</span> result;
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2>Helper functions for OpenSearchlight</h2>
+<p>Converts scalar arguments into arrays with the scalar as the first array element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="function"><span class="keyword">function</span> <span class="title">arrayify</span><span class="params">(p)</span> {</span>
+     <span class="keyword">var</span> a = [];
+     <span class="keyword">if</span> (_.isArray(p)) {
+        <span class="keyword">return</span> p;
+     } <span class="keyword">else</span> {
+        a.push(p);
+        <span class="keyword">return</span> a;
+     }
+  }
+
+  OpenSearchlight.ensureParamsNotEmpty = <span class="keyword">function</span>(params) {
+    <span class="keyword">if</span> (params === <span class="literal">undefined</span>) {
+       <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Must pass a params object"</span>);
+    }
+  };
+
+  OpenSearchlight.ensureParamsHasOsdd = <span class="function"><span class="keyword">function</span> <span class="params">(params)</span> {</span>
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> params.osdd !== <span class="string">"string"</span>) {
+       <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Must pass an osdd value in the params object"</span>);
+    }
+  };
+
+  OpenSearchlight.ensureParamsHasSuccessHandler = <span class="function"><span class="keyword">function</span> <span class="params">(params)</span> {</span>
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> params.success !== <span class="string">"function"</span>) {
+       <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Must pass a success handler in the params object"</span>);
+    }
+  };
+
+}());
+
+(<span class="function"><span class="keyword">function</span> <span class="params">($, _)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h2>OpenSearchQuery</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> OpenSearchQuery;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p><strong>OpenSearchQuery</strong> wraps up your query on an OpenSearch endpoint.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  OpenSearchQuery = OpenSearchlight.OpenSearchQuery = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">this</span>.initialize.apply(<span class="keyword">this</span>, arguments);
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Instance methods</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _.extend(OpenSearchQuery.prototype, {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>&quot;constructor&quot; - requires the xml of an OSDD or a fully formed OpenSearchDescriptionDocument</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    initialize: <span class="function"><span class="keyword">function</span> <span class="params">(osddXml)</span> {</span>
+      <span class="keyword">if</span> (arguments.length === <span class="number">0</span>) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Must pass OSDD's XML"</span>);
+      }
+
+      <span class="keyword">if</span> (osddXml <span class="keyword">instanceof</span> OpenSearchlight.OpenSearchDescriptionDocument) {
+        <span class="keyword">this</span>.openSearchDescriptionDocument = osddXml;
+      } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> osddXml === <span class="string">"string"</span>) {
+        <span class="keyword">this</span>.openSearchDescriptionDocument = <span class="keyword">this</span>.createOpenSearchDescriptionDocument(osddXml);
+      } <span class="keyword">else</span> {
+        <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Invalid argument to OpenSearchQuery"</span>);
+      }
+
+      <span class="keyword">this</span>.searchParams = {};
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Set a search parameter.  Chainable method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    set: <span class="keyword">function</span>(key, val) {
+      <span class="keyword">this</span>.searchParams[key] = val;
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Set the desired content type to retrieve from the server. If the server
+does not provide an endpoint that matches this value, you&#39;re liable to
+get an error.  Chainable method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    setContentType: <span class="function"><span class="keyword">function</span> <span class="params">(contentType)</span> {</span>
+      <span class="keyword">this</span>.contentType = contentType;
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Performs the current query.</p>
+<ul>
+<li><code>options</code>: object literal containing the following:</li>
+<li><code>url</code>: URL to GET</li>
+<li><code>success</code>: callback function for successful queries.  Should accept one parameter: the results.</li>
+<li><code>error</code> (optional): callback function for error conditions.  Can take three</li>
+<li><code>queryXhr</code> (optional): callback function to store ajax call response.   Should accept one parameter: the results.
+parameters: <code>jqXHR</code>, <code>textStatus</code>, and <code>errorThrown</code> (see
+<a href="http://api.jquery.com/jQuery.ajax/"><a href="http://api.jquery.com/jQuery.ajax/">http://api.jquery.com/jQuery.ajax/</a></a>)</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    execute: <span class="keyword">function</span>(options) {
+      <span class="keyword">var</span> queryUrl = <span class="keyword">this</span>.openSearchDescriptionDocument.getQueryUrl(<span class="keyword">this</span>.getParams(), <span class="keyword">this</span>.getContentType());
+      <span class="keyword">var</span> xhr = $.ajax({
+        url: queryUrl,
+        success: <span class="function"><span class="keyword">function</span> <span class="params">(data, textStatus, jqXhr)</span> {</span>
+          options.success(jqXhr);
+        },
+        error: options.error
+      });
+
+      <span class="keyword">if</span> (options.queryXhr !== <span class="literal">undefined</span>) {
+        options.queryXhr(xhr);
+      }
+    },
+
+    get: <span class="keyword">function</span>(key) {
+      <span class="keyword">return</span> <span class="keyword">this</span>.searchParams[key];
+    },
+
+    getContentType: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      <span class="keyword">return</span> <span class="keyword">this</span>.contentType;
+    },
+
+    getParams: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      <span class="keyword">return</span> <span class="keyword">this</span>.searchParams;
+    },
+
+    createOpenSearchDescriptionDocument: <span class="function"><span class="keyword">function</span> <span class="params">(osddXml)</span> {</span>
+      <span class="keyword">return</span> <span class="keyword">new</span> OpenSearchlight.OpenSearchDescriptionDocument(osddXml);
+    }
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Class methods - none!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _.extend(OpenSearchQuery, {
+  });
+
+}(jQuery, _));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <h2>openSearchService</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="function"><span class="keyword">function</span> <span class="params">($, _)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Factory to create an OpenSearchQuery</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  OpenSearchlight.openSearchService = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Retrieves the OSDD at the specified url (if necessary), and calls back to
+onSuccess when complete, providing onSuccess a query object to work with.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    query: <span class="function"><span class="keyword">function</span> <span class="params">(url, onSuccess)</span> {</span>
+      $.ajax({
+        url: url,
+        success: _.bind(<span class="function"><span class="keyword">function</span> <span class="params">(data, textStatus, jqXhr)</span> {</span>
+          onSuccess.call(<span class="keyword">this</span>, <span class="keyword">this</span>.createQueryObject(jqXhr.responseText));
+        }, <span class="keyword">this</span>)
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Creates an OpenSearchQuery object. Easy to override if you don&#39;t actually
+want to incur the cost of that, e.g. for testing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    createQueryObject: <span class="keyword">function</span>(osddXml) {
+      <span class="keyword">return</span> <span class="keyword">new</span> OpenSearchlight.OpenSearchQuery(osddXml);
+    }
+  };
+
+}(jQuery, _));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <h2>OpenSearchDescriptionDocument</h2>
+<p><code>OpenSearchDescriptionDocument</code> wraps up parsing the good stuff out of an
+OSDD, and generates the query URL for someone else to GET later on.</p>
+<p>Hide the internals within the closure scope. Pull in jQuery and Underscore
+from the environment.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="function"><span class="keyword">function</span> <span class="params">($, _)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Shortcut name</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">var</span> OSDD;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Create a simple constructor function; behaviors will be added shortly.
+Just like the backbone.js way.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  OSDD = OpenSearchlight.OpenSearchDescriptionDocument = <span class="function"><span class="keyword">function</span> <span class="params">(osddXml)</span> {</span>
+    <span class="keyword">this</span>.initialize.apply(<span class="keyword">this</span>, arguments);
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p><em>Instance methods</em></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _.extend(OSDD.prototype, {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Override <code>initialize</code> to override the default constructor behavior.</p>
+<ul>
+<li><code>osddXml</code>: the XML content of an OSDD</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    initialize: <span class="function"><span class="keyword">function</span> <span class="params">(osddXml)</span> {</span>
+      <span class="keyword">if</span> (!OSDD.validate(osddXml)) {
+        <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Error parsing xml"</span>);
+      }
+      <span class="keyword">this</span>.osddXml = osddXml;
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Based on the OSDD template URLs, the search parameters and the desired
+content type, construct the best fitting query URL.  Content type has
+the highest priority; search parameters are lower.  Parameters without a
+match in the template are ignored.</p>
+<ul>
+<li><code>params</code>: an object containing template parameters and their values to
+substitute into the template url</li>
+<li><code>contentType</code>: string with the desired content type, e.g. &quot;text/xml&quot;</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    getQueryUrl: <span class="function"><span class="keyword">function</span> <span class="params">(params, contentType)</span> {</span>
+      <span class="keyword">var</span> urlTemplates, template, queryUrl;
+      urlTemplates = OSDD.extractTemplateUrls(<span class="keyword">this</span>.osddXml);
+      template = OSDD.getBestTemplate(urlTemplates, contentType, params);
+      queryUrl = OSDD.substituteTemplateParameters(template, params);
+      <span class="keyword">return</span> queryUrl;
+    }
+
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p><em>Class methods</em>.  These are internal methods, but exposed for overriding as
+necessary.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _.extend(OSDD, {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Validate the OSDD XML.  Returns <code>true</code> if XML is valid OSDD. 
+<em>Not currently very sophisticated...</em></p>
+<ul>
+<li><code>osddXml</code>: string with the XML of the OSDD</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    validate: <span class="function"><span class="keyword">function</span> <span class="params">(osddXml)</span> {</span>
+      <span class="keyword">if</span> (!osddXml) { <span class="keyword">return</span> <span class="literal">false</span>; }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>TODO: replace this naive text matching with some actual XML parsing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">if</span> (!osddXml.match(<span class="regexp">/http:\/\/a9.com\/-\/spec\/opensearch\/1.1\//</span>)) { <span class="keyword">return</span> <span class="literal">false</span>; }
+      <span class="keyword">return</span> <span class="literal">true</span>;
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Returns an array of JSON objecs representing the template URLs found in
+the OSDD XML, or undefined if none are found.</p>
+<ul>
+<li><code>osddXml</code>: string with the XML of the OSDD</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    extractTemplateUrls: <span class="function"><span class="keyword">function</span> <span class="params">(osddXml)</span> {</span>
+      <span class="keyword">var</span> templates = [],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>TODO: would be nice to remove the dependency on jQuery here:</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        jqTemplates = $(osddXml).find(<span class="string">'url[rel!=self]'</span>);
+
+      jqTemplates.each(<span class="function"><span class="keyword">function</span> <span class="params">(index, element)</span> {</span>
+        templates.push( {
+            type: <span class="keyword">this</span>.getAttribute(<span class="string">"type"</span>),
+            template: <span class="keyword">this</span>.getAttribute(<span class="string">"template"</span>)
+          });
+      });
+
+      <span class="keyword">if</span> (templates.length === <span class="number">0</span>) {
+        <span class="keyword">return</span> <span class="literal">undefined</span>;
+      } <span class="keyword">else</span> {
+        <span class="keyword">return</span> templates;
+      }
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>Parameters:</p>
+<ul>
+<li><code>urlTemplates</code>: array of <code>{ type: &quot;contentType&quot;, template: &quot;urlTemplate&quot; }</code> objects, as found in the OSDD</li>
+<li><code>contentType</code>: requested content type, e.g. <code>&quot;application/json&quot;</code></li>
+<li><code>params</code>: object containing search parameters</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    getBestTemplate: <span class="function"><span class="keyword">function</span> <span class="params">(urlTemplates, contentType, params)</span> {</span>
+      <span class="keyword">var</span> filteredByType, filteredByRequiredParams, bestMatch;
+      filteredByType = OSDD.filterUrlTemplatesOnMimeType(urlTemplates, contentType);
+      filteredByRequiredParams = OSDD.filterUrlTemplatesWithMissingRequiredParams(filteredByType, params);
+      bestMatch = OSDD.findTemplateWithMostParamMatches(filteredByRequiredParams, params);
+      <span class="keyword">return</span> bestMatch.template;
+    },
+
+    filterUrlTemplatesOnMimeType: <span class="function"><span class="keyword">function</span> <span class="params">(urlTemplates, type)</span> {</span>
+      <span class="keyword">return</span> _.filter(urlTemplates, <span class="function"><span class="keyword">function</span> <span class="params">(urlTemplate)</span> {</span>
+        <span class="keyword">return</span> OSDD.doesContentTypeMatch(type, urlTemplate.type);
+      });
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Perform some simple content type matching. Returns true if the type does
+match the matcher, false otherwise.</p>
+<ul>
+<li><code>matcher</code>: desired content type.  Wildcards, e.g. <code>&quot;*/*&quot;</code> or <code>&quot;text/*&quot;</code> are allowed.</li>
+<li><code>type</code>: content type to match against</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    doesContentTypeMatch: <span class="function"><span class="keyword">function</span> <span class="params">(matcher, type)</span> {</span>
+      <span class="keyword">var</span> matcher_parts, type_parts;
+      <span class="keyword">if</span> (matcher === <span class="string">"*/*"</span>) {
+        <span class="keyword">return</span> <span class="literal">true</span>;
+      } <span class="keyword">else</span> <span class="keyword">if</span> (matcher === type) {
+        <span class="keyword">return</span> <span class="literal">true</span>;
+      }
+
+      matcher_parts = matcher.split(<span class="string">"/"</span>);
+      type_parts = type.split(<span class="string">"/"</span>);
+
+      <span class="keyword">if</span> (matcher_parts[<span class="number">0</span>] === type_parts[<span class="number">0</span>] &amp;&amp; matcher_parts[<span class="number">1</span>] === <span class="string">"*"</span>) {
+        <span class="keyword">return</span> <span class="literal">true</span>;
+      } <span class="keyword">else</span> <span class="keyword">if</span> (matcher_parts[<span class="number">0</span>] === <span class="string">"*"</span> &amp;&amp; matcher_parts[<span class="number">1</span>] === type_parts[<span class="number">1</span>]) {
+        <span class="keyword">return</span> <span class="literal">true</span>;
+      }
+
+      <span class="keyword">return</span> <span class="literal">false</span>;
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Return the subset of templates in the <code>urlTemplates</code> array whose
+required params are available in the <code>params</code> object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    filterUrlTemplatesWithMissingRequiredParams: <span class="function"><span class="keyword">function</span> <span class="params">(urlTemplates, params)</span> {</span>
+      <span class="keyword">return</span> _.filter(urlTemplates, <span class="function"><span class="keyword">function</span> <span class="params">(urlTemplate)</span> {</span>
+        <span class="keyword">return</span> OSDD.areAllRequiredParamsPresent(urlTemplate, params);
+      });
+    },
+
+
+    areAllRequiredParamsPresent: <span class="function"><span class="keyword">function</span> <span class="params">(template, params)</span> {</span>
+       <span class="keyword">var</span> allParams, requiredParams, actualParams;
+       allParams = _.map(
+          template.template.match(<span class="regexp">/\{[^}]*\}/g</span>),  <span class="comment">// Find all template substrings</span>
+          <span class="function"><span class="keyword">function</span> <span class="params">(p)</span> {</span>
+             <span class="keyword">return</span> p.replace(<span class="regexp">/[{}]/g</span>, <span class="string">''</span>);        <span class="comment">// Strip off the braces</span>
+          }
+       );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>Select the subset of template parameters that don&#39;t end with a &quot;?&quot;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>       requiredParams = _.filter(
+          allParams,
+          <span class="keyword">function</span>(param) { <span class="keyword">return</span> param.substring(param.length-<span class="number">1</span>) !== <span class="string">"?"</span>; }
+       );
+
+       actualParams = _.keys(params);
+
+       <span class="keyword">return</span> ((_.difference(requiredParams, actualParams)).length === <span class="number">0</span>);
+    },
+
+
+    XareAllRequiredParamsPresent: <span class="function"><span class="keyword">function</span> <span class="params">(template, params)</span> {</span>
+      <span class="keyword">var</span> requiredParams, actualParams;
+      requiredParams = _.map(
+          template.template.match(<span class="regexp">/\{.*?[^?]\}/g</span>),
+          <span class="function"><span class="keyword">function</span> <span class="params">(p)</span> {</span>
+            <span class="keyword">return</span> p.replace(<span class="regexp">/[{}]/g</span>, <span class="string">''</span>);
+          });
+      actualParams = _.keys(params);
+
+      <span class="keyword">return</span> ((_.difference(requiredParams, actualParams)).length === <span class="number">0</span>);
+    },
+
+    findTemplateWithMostParamMatches: <span class="function"><span class="keyword">function</span> <span class="params">(templateUrls, params)</span> {</span>
+      <span class="keyword">var</span> sortedTemplateUrls = _.sortBy(
+          templateUrls,
+          <span class="function"><span class="keyword">function</span> <span class="params">(urlTemplate)</span> {</span>
+            <span class="keyword">return</span> OSDD.countMatchingParams(params, urlTemplate.template);
+          });
+      <span class="keyword">return</span> _.last(sortedTemplateUrls);
+    },
+
+    countMatchingParams: <span class="keyword">function</span>(params, templateUrl) {
+      <span class="keyword">var</span> templateParams;
+
+      templateParams = _.map(
+          templateUrl.match(<span class="regexp">/\{.*?\}/g</span>),
+          <span class="function"><span class="keyword">function</span> <span class="params">(param)</span> {</span>
+            <span class="keyword">return</span> param.replace(<span class="regexp">/[{}]/g</span>, <span class="string">''</span>);
+          });
+
+      <span class="keyword">return</span> _.reduce(
+          templateParams,
+          <span class="keyword">function</span>(memo, item) {
+            <span class="keyword">return</span> (params[item] === <span class="literal">undefined</span>) ? memo : memo + <span class="number">1</span>;
+          },
+          <span class="number">0</span>);
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>Replace the placeholder fields in the given <code>urlTemplate</code> with the
+values in <code>params</code>. Any unfilled parameter template fields are replaced
+with an empty string.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    substituteTemplateParameters: <span class="function"><span class="keyword">function</span> <span class="params">(urlTemplate, params)</span> {</span>
+      <span class="keyword">var</span> url = urlTemplate;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>interpolate all params into the url placeholders</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      _.each(params, <span class="keyword">function</span>(value, key) {
+        url = url.replace(<span class="keyword">new</span> RegExp(<span class="string">"{"</span>+key+<span class="string">"\\??}"</span>), value);
+      });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>strip out any remaining {....?} template params</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      url = url.replace(<span class="regexp">/\{.*?\?\}/g</span>, <span class="string">""</span>);
+      <span class="keyword">return</span> url;
+    }
+  });
+
+
+}(jQuery, _));</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
