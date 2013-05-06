@@ -47,13 +47,14 @@
 
     // Performs the current query.
     //
-    //   * `options`: object literal containing the following:
+    // * `options`: object literal containing the following:
     //   * `url`: URL to GET
     //   * `success`: callback function for successful queries.  Should accept one parameter: the results.
     //   * `error` (optional): callback function for error conditions.  Can take three
-    //   * `queryXhr` (optional): callback function to store ajax call response.   Should accept one parameter: the results.
     //     parameters: `jqXHR`, `textStatus`, and `errorThrown` (see
     //     [http://api.jquery.com/jQuery.ajax/](http://api.jquery.com/jQuery.ajax/))
+    //   * `queryXhr` (optional): callback function for the search query jqXHR.   
+    //     Callback will be called with one parameter: the jqXHR.
     execute: function(options) {
       var queryUrl = this.openSearchDescriptionDocument.getQueryUrl(this.getParams(), this.getContentType());
       var xhr = $.ajax({
