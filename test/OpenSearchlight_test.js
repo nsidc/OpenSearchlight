@@ -279,8 +279,33 @@ describe("error conditions", function () {
   });
 
   it("should call the error callback if retrieving the OSDD returns an error", function () {
-    // TODO
-    equal(true, true);
+    var errorFn, queryParams, successFn, fakeQuery;
+    errorFn = sinon.spy();
+    successFn = sinon.spy();
+
+    var stub = sinon.stub(OpenSearchlight.openSearchService, "query");
+    fakeQuery = {
+      set: sinon.stub(),
+      execute: sinon.stub(),
+      setContentType: sinon.stub()
+    };
+
+    fakeQuery.execute.yieldsTo("error");
+
+    stub.callsArgWith(1, fakeQuery);
+
+    queryParams = {
+      osdd: "http://badurlforosddvalidation.com",
+      success: successFn,
+      error: errorFn
+    };
+
+    OpenSearchlight.query(queryParams);
+
+    OpenSearchlight.openSearchService.query.restore();
+
+    assert(errorFn.callCount).should(eql, 1);
+    assert(successFn.callCount).should(eql, 0);
   });
 });
 

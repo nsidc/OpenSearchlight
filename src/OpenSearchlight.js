@@ -80,7 +80,7 @@ var OpenSearchlight = OpenSearchlight || {};
     OpenSearchlight.ensureParamsHasSuccessHandler(params);
 
     queryFunction = OpenSearchlight.generateOsddSuccessFn(params);
-    OpenSearchlight.openSearchService.query(params.osdd, queryFunction);
+    OpenSearchlight.openSearchService.query(params.osdd, queryFunction, params.error);
   };
 
   // Generator for the onSuccess method used when the OSDD is

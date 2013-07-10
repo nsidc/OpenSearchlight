@@ -7,8 +7,8 @@ easier from JS clients.
 ## Download
 Download the [minified version][min] or the [development version][max].
 
-[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.2.3.min.js
-[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.2.3.js
+[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.3.0.min.js
+[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.3.0.js
 
 ## Usage
 
@@ -69,6 +69,8 @@ This software was developed by the National Snow and Ice Data Center, sponsored
 by National Science Foundation grant number OPP-10-16048.
 
 ## Release History
+* 0.3.0
+  * OSDD fetch will now call error callback on request failure.
 * 0.2.3
   * Added an optional callback function in OpenSearchQuery API
 * 0.2.2
