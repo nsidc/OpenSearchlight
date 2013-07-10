@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>OpenSearchlight-0.2.3.js</title>
+  <title>OpenSearchlight-0.3.0.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -15,7 +15,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>OpenSearchlight-0.2.3.js</h1>
+                  <h1>OpenSearchlight-0.3.0.js</h1>
               </div>
           </li>
         
@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="comment">/*! Opensearchlight - v0.2.3 - 2013-05-03
+            <div class="content"><div class='highlight'><pre><span class="comment">/*! Opensearchlight - v0.3.0 - 2013-07-10
 * https://github.com/nsidc/OpenSearchlight
 * Copyright (c) 2013 Regents of the University of Colorado; Licensed MIT
 */</span></pre></div></div>
@@ -129,7 +129,7 @@ API explicitly:</p>
     OpenSearchlight.ensureParamsHasSuccessHandler(params);
 
     queryFunction = OpenSearchlight.generateOsddSuccessFn(params);
-    OpenSearchlight.openSearchService.query(params.osdd, queryFunction);
+    OpenSearchlight.openSearchService.query(params.osdd, queryFunction, params.error);
   };</pre></div></div>
             
         </li>
@@ -401,13 +401,15 @@ get an error.  Chainable method.</p>
               </div>
               <p>Performs the current query.</p>
 <ul>
-<li><code>options</code>: object literal containing the following:</li>
+<li><code>options</code>: object literal containing the following:<ul>
 <li><code>url</code>: URL to GET</li>
 <li><code>success</code>: callback function for successful queries.  Should accept one parameter: the results.</li>
-<li><code>error</code> (optional): callback function for error conditions.  Can take three</li>
-<li><code>queryXhr</code> (optional): callback function to store ajax call response.   Should accept one parameter: the results.
+<li><code>error</code> (optional): callback function for error conditions.  Can take three
 parameters: <code>jqXHR</code>, <code>textStatus</code>, and <code>errorThrown</code> (see
 <a href="http://api.jquery.com/jQuery.ajax/"><a href="http://api.jquery.com/jQuery.ajax/">http://api.jquery.com/jQuery.ajax/</a></a>)</li>
+<li><code>queryXhr</code> (optional): callback function for the search query jqXHR.<br>Callback will be called with one parameter: the jqXHR.</li>
+</ul>
+</li>
 </ul>
 
             </div>
@@ -506,11 +508,14 @@ onSuccess when complete, providing onSuccess a query object to work with.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    query: <span class="function"><span class="keyword">function</span> <span class="params">(url, onSuccess)</span> {</span>
+            <div class="content"><div class='highlight'><pre>    query: <span class="function"><span class="keyword">function</span> <span class="params">(url, onSuccess, onError)</span> {</span>
       $.ajax({
         url: url,
         success: _.bind(<span class="function"><span class="keyword">function</span> <span class="params">(data, textStatus, jqXhr)</span> {</span>
           onSuccess.call(<span class="keyword">this</span>, <span class="keyword">this</span>.createQueryObject(jqXhr.responseText));
+        }, <span class="keyword">this</span>),
+        error: _.bind(<span class="function"><span class="keyword">function</span> <span class="params">(errorXhr)</span> {</span>
+          onError.call(<span class="keyword">this</span>, errorXhr);
         }, <span class="keyword">this</span>)
       });
     },</pre></div></div>
