@@ -45,6 +45,11 @@
       return this;
     },
 
+    //TODO write wtf
+    setRequestHeaders: function (requestHeaders) {
+      this.requestHeaders = requestHeaders;
+    },    
+
     // Performs the current query.
     //
     // * `options`: object literal containing the following:
@@ -56,9 +61,15 @@
     //   * `queryXhr` (optional): callback function for the search query jqXHR.   
     //     Callback will be called with one parameter: the jqXHR.
     execute: function(options) {
-      var queryUrl = this.openSearchDescriptionDocument.getQueryUrl(this.getParams(), this.getContentType());
+      var queryUrl = this.openSearchDescriptionDocument.getQueryUrl(this.getParams(), this.getContentType()),
+          headers = this.getRequestHeaders();
       var xhr = $.ajax({
         url: queryUrl,
+        beforeSend:  function(jqXhr) {
+          _.each(headers, function (header) {
+            jqXhr.setRequestHeader(header.name, header.value);        
+          }, this);
+        },
         success: function (data, textStatus, jqXhr) {
           options.success(jqXhr);
         },
@@ -74,6 +85,10 @@
       return this.searchParams[key];
     },
 
+    getRequestHeaders: function () {
+      return this.requestHeaders; 
+    },
+
     getContentType: function () {
       return this.contentType;
     },
@@ -85,6 +100,7 @@
     createOpenSearchDescriptionDocument: function (osddXml) {
       return new OpenSearchlight.OpenSearchDescriptionDocument(osddXml);
     }
+
   });
 
   // Class methods - none!

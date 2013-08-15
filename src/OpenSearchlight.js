@@ -24,6 +24,7 @@
 //     OpenSearchlight.query({
 //        osdd: "http://www.example.com/opensearch?description",
 //        contentType: "text/xml",
+//        requestHeaders : [{name: "X-Requested-With", value: "MyApp"}]
 //        parameters: {
 //           searchTerms: "some search words",
 //           startPage: "20",
@@ -70,6 +71,7 @@ var OpenSearchlight = OpenSearchlight || {};
   //   * `osdd`: URL of the OpenSearch service's OSDD
   //   * `parameters`: search parameters to substitute into the search templates
   //   * `success`: callback function to call with the results. The results will be passed as the first argument to the function.
+  //   * `requestHeaders`: optional array of HTTP request headers in the form of name,value pair objects.
   //   * `contentType`: contentType requested of the service
   //   * `error`: callback function if the opensearch query fails
   OpenSearchlight.query = function (params) {
@@ -99,6 +101,10 @@ var OpenSearchlight = OpenSearchlight || {};
            if (params.contentType !== undefined) {
               query.setContentType(params.contentType);
            }
+           // Extract desired HTTP request headers
+           if (params.requestHeaders !== undefined) {
+              query.setRequestHeaders(params.requestHeaders);
+           }           
         }
 
         queryParams = OpenSearchlight.extendWith({}, params, ["success", "error", "queryXhr"]);
