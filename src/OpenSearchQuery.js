@@ -45,9 +45,11 @@
       return this;
     },
 
-    //TODO write wtf
+    // Set optional request headers that can be used to track the ajax calls on the server side.
+    // i.e. we can override X-Requested-With to "MyApp" etc. Chainable method.
     setRequestHeaders: function (requestHeaders) {
       this.requestHeaders = requestHeaders;
+      return this;
     },    
 
     // Performs the current query.

@@ -24,7 +24,7 @@
 //     OpenSearchlight.query({
 //        osdd: "http://www.example.com/opensearch?description",
 //        contentType: "text/xml",
-//        requestHeaders : [{name: "X-Requested-With", value: "MyApp"}]
+//        requestHeaders: [{name: "X-Requested-With", value: "MyApp"}]
 //        parameters: {
 //           searchTerms: "some search words",
 //           startPage: "20",
@@ -49,6 +49,7 @@
 //              .set("startPage", "20")
 //              .set("resultsPerPage", "100")
 //              .setContentType("text/xml")
+//              .setRequestHeaders([{name: "X-Requested-With", value: "MyApp"}])
 //              .execute({
 //                 success: function (data) {
 //                    // data contains results!

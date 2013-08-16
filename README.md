@@ -37,7 +37,8 @@ in ATOM format, starting at the second page with ten results per page:
 <script>
 OpenSearchlight.query({
    osdd: "http://www.example.com/opensearch?description",
-   contentType: "application/atom+xml"
+   contentType: "application/atom+xml",
+   requestHeaders: [{name: "X-Requested-With", value: "MyApp"}],
    parameters: {
       searchTerms: "steely",
       startPage: "2",
@@ -69,6 +70,8 @@ This software was developed by the National Snow and Ice Data Center, sponsored
 by National Science Foundation grant number OPP-10-16048.
 
 ## Release History
+* 0.4.0
+  * Added optional requestHeaders parameter to OpenSearchQuery
 * 0.3.0
   * OSDD fetch will now call error callback on request failure.
 * 0.2.3
