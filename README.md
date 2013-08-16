@@ -7,8 +7,8 @@ easier from JS clients.
 ## Download
 Download the [minified version][min] or the [development version][max].
 
-[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.3.0.min.js
-[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.3.0.js
+[min]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.4.0.min.js
+[max]: https://raw.github.com/nsidc/OpenSearchlight/gh-pages/OpenSearchlight-0.4.0.js
 
 ## Usage
 
@@ -22,7 +22,7 @@ at http://www.example.com/opensearch?description contains the following:
    <Description>Use Example.com to search the Web.</Description>
    <Url type="application/atom+xml"
         template="http://example.com/?q={searchTerms}&amp;pw={startPage?}&amp;n={resultsPerPage?}&amp;format=atom"/>
-   <Url type="text/html" 
+   <Url type="text/html"
         template="http://example.com/?q={searchTerms}&amp;pw={startPage?}&amp;n={resultsPerPage?}"/>
    <Query role="example" searchTerms="cat" />
  </OpenSearchDescription>
@@ -107,7 +107,7 @@ considered a substitute for the real thing. Please be sure to test the
 * Make change to code
 * Update version number in `OpenSearchlight.pkg.json`
 * In `README.md` update version numbers in Download and Release History sections
-* Run `grunt` and ensure all tests pass
+* Run `grunt` and ensure all tests pass (run `git submodule update --init` first)
 * Run `grunt docs` to generate updated source documentation
 * Run `test/*.html` in the browser and ensure all tests pass
 * Check changes in to Git master
@@ -125,4 +125,3 @@ _This assumes you have [node.js](http://nodejs.org/) and [npm](http://npmjs.org/
 3. If grunt isn't installed globally, run `npm install -g grunt-cli` to install the latest version. _You may need to run `sudo npm install -g grunt-cli`._
 4. From the root directory of this project, run `npm install` to install the project's dependencies.
 5. Run `grunt` from the root directory to run the tests and build the packages and documentaion.
-

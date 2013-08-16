@@ -209,7 +209,7 @@ describe("OpenSearchQuery", function () {
   before(function () {
     sinon.stub(OpenSearchlight.OpenSearchQuery.prototype,"initialize");
     sinon.stub(OpenSearchlight.OpenSearchDescriptionDocument.prototype, "initialize");
-    sinon.stub(OpenSearchlight.OpenSearchDescriptionDocument.prototype, "getQueryUrl");    
+    sinon.stub(OpenSearchlight.OpenSearchDescriptionDocument.prototype, "getQueryUrl");
   });
 
   after(function () {
@@ -224,7 +224,7 @@ describe("OpenSearchQuery", function () {
     sinon.stub($, "ajax").returns(fakeJqXhr);
     osQuery = new OpenSearchlight.OpenSearchQuery();
     osQuery.openSearchDescriptionDocument = new OpenSearchlight.OpenSearchDescriptionDocument();
-   
+
     osQuery.execute({queryXhr: queryXhrStub});
 
     assert(queryXhrStub.callCount).should(eql, 1);
@@ -351,4 +351,3 @@ describe("selective extend mechanism", function () {
     assert(_.size(target)).should(eql, 1);
   });
 });
-
