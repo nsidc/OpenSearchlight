@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>OpenSearchlight-0.3.0.js</title>
+  <title>OpenSearchlight-0.4.0.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -15,7 +15,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>OpenSearchlight-0.3.0.js</h1>
+                  <h1>OpenSearchlight-0.4.0.js</h1>
               </div>
           </li>
         
@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="comment">/*! Opensearchlight - v0.3.0 - 2013-07-10
+            <div class="content"><div class='highlight'><pre><span class="comment">/*! Opensearchlight - v0.4.0 - 2013-08-16
 * https://github.com/nsidc/OpenSearchlight
 * Copyright (c) 2013 Regents of the University of Colorado; Licensed MIT
 */</span></pre></div></div>
@@ -58,6 +58,7 @@ service and get back results.</p>
 <pre><code>OpenSearchlight.query({
    osdd: &quot;http://www.example.com/opensearch?description&quot;,
    contentType: &quot;text/xml&quot;,
+   requestHeaders: [{name: &quot;X-Requested-With&quot;, value: &quot;MyApp&quot;}]
    parameters: {
       searchTerms: &quot;some search words&quot;,
       startPage: &quot;20&quot;,
@@ -80,6 +81,7 @@ API explicitly:</p>
          .set(&quot;startPage&quot;, &quot;20&quot;)
          .set(&quot;resultsPerPage&quot;, &quot;100&quot;)
          .setContentType(&quot;text/xml&quot;)
+         .setRequestHeaders([{name: &quot;X-Requested-With&quot;, value: &quot;MyApp&quot;}])
          .execute({
             success: function (data) {
                // data contains results!
@@ -113,6 +115,7 @@ API explicitly:</p>
 <li><code>osdd</code>: URL of the OpenSearch service&#39;s OSDD</li>
 <li><code>parameters</code>: search parameters to substitute into the search templates</li>
 <li><code>success</code>: callback function to call with the results. The results will be passed as the first argument to the function.</li>
+<li><code>requestHeaders</code>: optional array of HTTP request headers in the form of name,value pair objects.</li>
 <li><code>contentType</code>: contentType requested of the service</li>
 <li><code>error</code>: callback function if the opensearch query fails</li>
 </ul>
@@ -184,7 +187,24 @@ successfully retrieved</p>
             
             <div class="content"><div class='highlight'><pre>           <span class="keyword">if</span> (params.contentType !== <span class="literal">undefined</span>) {
               query.setContentType(params.contentType);
-           }
+           }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Extract desired HTTP request headers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>           <span class="keyword">if</span> (params.requestHeaders !== <span class="literal">undefined</span>) {
+              query.setRequestHeaders(params.requestHeaders);
+           }           
         }
 
         queryParams = OpenSearchlight.extendWith({}, params, [<span class="string">"success"</span>, <span class="string">"error"</span>, <span class="string">"queryXhr"</span>]);
@@ -195,11 +215,11 @@ successfully retrieved</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Copy selected properties from the <code>src</code> object to the <code>dest</code> object.
 Returns a new object with the combined properties.</p>
@@ -233,11 +253,11 @@ Returns a new object with the combined properties.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <h2>Helper functions for OpenSearchlight</h2>
 <p>Converts scalar arguments into arrays with the scalar as the first array element.</p>
@@ -279,11 +299,11 @@ Returns a new object with the combined properties.</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <h2>OpenSearchQuery</h2>
 
@@ -294,11 +314,11 @@ Returns a new object with the combined properties.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p><strong>OpenSearchQuery</strong> wraps up your query on an OpenSearch endpoint.</p>
 
@@ -311,11 +331,11 @@ Returns a new object with the combined properties.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Instance methods</p>
 
@@ -326,11 +346,11 @@ Returns a new object with the combined properties.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>&quot;constructor&quot; - requires the xml of an OSDD or a fully formed OpenSearchDescriptionDocument</p>
 
@@ -355,11 +375,11 @@ Returns a new object with the combined properties.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Set a search parameter.  Chainable method.</p>
 
@@ -373,11 +393,11 @@ Returns a new object with the combined properties.</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Set the desired content type to retrieve from the server. If the server
 does not provide an endpoint that matches this value, you&#39;re liable to
@@ -393,11 +413,30 @@ get an error.  Chainable method.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Set optional request headers that can be used to track the ajax calls on the server side.
+i.e. we can override X-Requested-With to &quot;MyApp&quot; etc. Chainable method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    setRequestHeaders: <span class="function"><span class="keyword">function</span> <span class="params">(requestHeaders)</span> {</span>
+      <span class="keyword">this</span>.requestHeaders = requestHeaders;
+      <span class="keyword">return</span> <span class="keyword">this</span>;
+    },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Performs the current query.</p>
 <ul>
@@ -415,9 +454,15 @@ parameters: <code>jqXHR</code>, <code>textStatus</code>, and <code>errorThrown</
             </div>
             
             <div class="content"><div class='highlight'><pre>    execute: <span class="keyword">function</span>(options) {
-      <span class="keyword">var</span> queryUrl = <span class="keyword">this</span>.openSearchDescriptionDocument.getQueryUrl(<span class="keyword">this</span>.getParams(), <span class="keyword">this</span>.getContentType());
+      <span class="keyword">var</span> queryUrl = <span class="keyword">this</span>.openSearchDescriptionDocument.getQueryUrl(<span class="keyword">this</span>.getParams(), <span class="keyword">this</span>.getContentType()),
+          headers = <span class="keyword">this</span>.getRequestHeaders();
       <span class="keyword">var</span> xhr = $.ajax({
         url: queryUrl,
+        beforeSend:  <span class="keyword">function</span>(jqXhr) {
+          _.each(headers, <span class="function"><span class="keyword">function</span> <span class="params">(header)</span> {</span>
+            jqXhr.setRequestHeader(header.name, header.value);        
+          }, <span class="keyword">this</span>);
+        },
         success: <span class="function"><span class="keyword">function</span> <span class="params">(data, textStatus, jqXhr)</span> {</span>
           options.success(jqXhr);
         },
@@ -433,6 +478,10 @@ parameters: <code>jqXHR</code>, <code>textStatus</code>, and <code>errorThrown</
       <span class="keyword">return</span> <span class="keyword">this</span>.searchParams[key];
     },
 
+    getRequestHeaders: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      <span class="keyword">return</span> <span class="keyword">this</span>.requestHeaders; 
+    },
+
     getContentType: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
       <span class="keyword">return</span> <span class="keyword">this</span>.contentType;
     },
@@ -444,16 +493,17 @@ parameters: <code>jqXHR</code>, <code>textStatus</code>, and <code>errorThrown</
     createOpenSearchDescriptionDocument: <span class="function"><span class="keyword">function</span> <span class="params">(osddXml)</span> {</span>
       <span class="keyword">return</span> <span class="keyword">new</span> OpenSearchlight.OpenSearchDescriptionDocument(osddXml);
     }
+
   });</pre></div></div>
             
         </li>
         
         
-        <li id="section-16">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Class methods - none!</p>
 
@@ -467,11 +517,11 @@ parameters: <code>jqXHR</code>, <code>textStatus</code>, and <code>errorThrown</
         </li>
         
         
-        <li id="section-17">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <h2>openSearchService</h2>
 
@@ -482,11 +532,11 @@ parameters: <code>jqXHR</code>, <code>textStatus</code>, and <code>errorThrown</
         </li>
         
         
-        <li id="section-18">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Factory to create an OpenSearchQuery</p>
 
@@ -497,11 +547,11 @@ parameters: <code>jqXHR</code>, <code>textStatus</code>, and <code>errorThrown</
         </li>
         
         
-        <li id="section-19">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Retrieves the OSDD at the specified url (if necessary), and calls back to
 onSuccess when complete, providing onSuccess a query object to work with.</p>
@@ -523,11 +573,11 @@ onSuccess when complete, providing onSuccess a query object to work with.</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Creates an OpenSearchQuery object. Easy to override if you don&#39;t actually
 want to incur the cost of that, e.g. for testing.</p>
@@ -544,11 +594,11 @@ want to incur the cost of that, e.g. for testing.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <h2>OpenSearchDescriptionDocument</h2>
 <p><code>OpenSearchDescriptionDocument</code> wraps up parsing the good stuff out of an
@@ -563,11 +613,11 @@ from the environment.</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Shortcut name</p>
 
@@ -578,11 +628,11 @@ from the environment.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Create a simple constructor function; behaviors will be added shortly.
 Just like the backbone.js way.</p>
@@ -596,11 +646,11 @@ Just like the backbone.js way.</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p><em>Instance methods</em></p>
 
@@ -611,11 +661,11 @@ Just like the backbone.js way.</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Override <code>initialize</code> to override the default constructor behavior.</p>
 <ul>
@@ -634,11 +684,11 @@ Just like the backbone.js way.</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Based on the OSDD template URLs, the search parameters and the desired
 content type, construct the best fitting query URL.  Content type has
@@ -665,11 +715,11 @@ substitute into the template url</li>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p><em>Class methods</em>.  These are internal methods, but exposed for overriding as
 necessary.</p>
@@ -681,11 +731,11 @@ necessary.</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Validate the OSDD XML.  Returns <code>true</code> if XML is valid OSDD. 
 <em>Not currently very sophisticated...</em></p>
@@ -701,11 +751,11 @@ necessary.</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>TODO: replace this naive text matching with some actual XML parsing</p>
 
@@ -718,11 +768,11 @@ necessary.</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Returns an array of JSON objecs representing the template URLs found in
 the OSDD XML, or undefined if none are found.</p>
@@ -738,11 +788,11 @@ the OSDD XML, or undefined if none are found.</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>TODO: would be nice to remove the dependency on jQuery here:</p>
 
@@ -767,11 +817,11 @@ the OSDD XML, or undefined if none are found.</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Parameters:</p>
 <ul>
@@ -799,11 +849,11 @@ the OSDD XML, or undefined if none are found.</p>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Perform some simple content type matching. Returns true if the type does
 match the matcher, false otherwise.</p>
@@ -837,11 +887,11 @@ match the matcher, false otherwise.</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Return the subset of templates in the <code>urlTemplates</code> array whose
 required params are available in the <code>params</code> object</p>
@@ -867,11 +917,11 @@ required params are available in the <code>params</code> object</p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Select the subset of template parameters that don&#39;t end with a &quot;?&quot;</p>
 
@@ -929,11 +979,11 @@ required params are available in the <code>params</code> object</p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Replace the placeholder fields in the given <code>urlTemplate</code> with the
 values in <code>params</code>. Any unfilled parameter template fields are replaced
@@ -947,11 +997,11 @@ with an empty string.</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>interpolate all params into the url placeholders</p>
 
@@ -964,11 +1014,11 @@ with an empty string.</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>strip out any remaining {....?} template params</p>
 
