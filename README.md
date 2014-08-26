@@ -125,3 +125,18 @@ _This assumes you have [node.js](http://nodejs.org/) and [npm](http://npmjs.org/
 3. If grunt isn't installed globally, run `npm install -g grunt-cli` to install the latest version. _You may need to run `sudo npm install -g grunt-cli`._
 4. From the root directory of this project, run `npm install` to install the project's dependencies.
 5. Run `grunt` from the root directory to run the tests and build the packages and documentaion.
+
+## How to contact NSIDC ###
+
+User Services and general information:  
+Support: http://support.nsidc.org  
+Email: nsidc@nsidc.org
+
+Phone: +1 303.492.6199  
+Fax: +1 303.492.2468
+
+Mailing address:  
+National Snow and Ice Data Center  
+CIRES, 449 UCB  
+University of Colorado  
+Boulder, CO 80309-0449 USA
