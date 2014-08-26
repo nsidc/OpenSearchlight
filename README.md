@@ -98,6 +98,8 @@ OpenSearchlight uses [semantic versioning][semver].
 Please don't edit files in the `dist` subdirectory as they are generated via
 grunt. You'll find source code in the `src` subdirectory!
 
+In order to generate dist/, run `grunt dist` after having run `npm install`.
+
 While grunt can run the included unit tests via PhantomJS, this shouldn't be
 considered a substitute for the real thing. Please be sure to test the
 `test/*.html` unit test file(s) in _actual_ browsers.
