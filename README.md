@@ -4,6 +4,11 @@ A JavaScript OpenSearch client that configures itself around an OpenSearch
 Description Document, making queries against OpenSearch services a little
 easier from JS clients.
 
+## TODO
+
+* Enable ES6 syntax and structure. See branch soac-62 for some experimenting along these lines.
+* Move from `Grunt` to `webpack` for building and deployment.
+
 ## Download
 Download the [minified version][min] or the [development version][max].
 
@@ -128,15 +133,15 @@ _This assumes you have [node.js](http://nodejs.org/) and [npm](http://npmjs.org/
 
 ## How to contact NSIDC ###
 
-User Services and general information:  
-Support: http://support.nsidc.org  
+User Services and general information:
+Support: http://support.nsidc.org
 Email: nsidc@nsidc.org
 
-Phone: +1 303.492.6199  
+Phone: +1 303.492.6199
 Fax: +1 303.492.2468
 
-Mailing address:  
-National Snow and Ice Data Center  
-CIRES, 449 UCB  
-University of Colorado  
+Mailing address:
+National Snow and Ice Data Center
+CIRES, 449 UCB
+University of Colorado
 Boulder, CO 80309-0449 USA
