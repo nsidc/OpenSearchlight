@@ -4,6 +4,7 @@
   "description": "A JavaScript OpenSearch client that configures itself around an OpenSearch Description Document, making queries against OpenSearch services a little easier from JS clients.",
   "homepage": "https://github.com/nsidc/OpenSearchlight",
   "version": "0.4.0",
+  "license": "MIT",
   "author": {
     "name": "Ian Truslove",
     "email": "ian.truslove@nsidc.org",
@@ -30,18 +31,12 @@
   "dependencies": {
     "jquery": "^3.5.1",
     "underscore": "^1.12.0"
-  }
+  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/nsidc/OpenSearchlight.git"
+    "url": "https://github.com/nsidc/OpenSearchlight.git"
   },
   "bugs": {
     "url": "https://github.com/nsidc/OpenSearchlight/issues"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/nsidc/OpenSearchlight/blob/master/LICENSE.txt"
-    }
-  ],
+  }
 }
